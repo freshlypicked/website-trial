@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freshly Picked | Operations & Admin Dashboard</title>
+  <style>
+    :root {
+      --primary-green: #2e7d32;
+      --dark-green: #1b4d2e;
+      --light-green: #eaf5eb;
+      --bg: #f4f6f8;
+      --border: #e5e7eb;
+      --text-dark: #1f2937;
+      --text-gray: #6b7280;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+    body { background: var(--bg); padding-bottom: 50px; color: var(--text-dark); }
+    
+    /* Security Overlay Screen */
+    #securityOverlay {
+      position: fixed;
+      inset: 0;
+      background: var(--dark-green);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .login-box {
+      background: white;
+      color: var(--text-dark);
+      padding: 30px;
+      border-radius: 14px;
+      width: min(380px, 90%);
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .login-box img { width: 60px; height: 60px; border-radius: 50%; margin-bottom: 10px; object-fit: cover;}
+    .login-box h2 { font-size: 20px; color: var(--primary-green); margin-bottom: 6px; }
+    .login-box p { font-size: 13px; color: var(--text-gray); margin-bottom: 16px; }
+    .login-box input {
+      width: 100%; padding: 12px; font-size: 18px; text-align: center; letter-spacing: 4px;
+      border: 1.5px solid var(--border); border-radius: 8px; margin-bottom: 16px; outline: none;
+    }
+    .login-box button {
+      width: 100%; padding: 12px; background: var(--primary-green); color: white;
+      border: none; border-radius: 8px; font-weight: 800; font-size: 15px; cursor: pointer;
+    }
+
+    /* Header */
+    header { 
+      background: var(--dark-green); 
+      color: white; 
+      padding: 12px 20px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .brand-title { font-size: 18px; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+    .brand-title img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; background: white;}
+    
+    /* Filter Bar */
+    .filter-bar {
+      background: white;
+      padding: 12px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .date-filter-group { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+    .date-filter-group input { padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; outline: none; }
+
+    /* Tabs */
+    .nav-tabs { 
+      background: white; 
+      display: flex; 
+      border-bottom: 2px solid var(--border); 
+      overflow-x: auto; 
+    }
+    .tab-btn { 
+      padding: 14px 20px; border: none; background: none; font-size: 13px; 
+      font-weight: 700; color: #6b7280; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; 
+    }
+    .tab-btn.active { color: var(--primary-green); border-bottom-color: var(--primary-green); background: #f0fdf4; }
+
+    /* Container & Stats */
+    .container { max-width: 1000px; margin: 20px auto; padding: 0 16px; }
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: white; padding: 16px; border-radius: 10px; border: 1px solid var(--border); }
+    .stat-card div { font-size: 11px; color: #6b7280; font-weight: 700; text-transform: uppercase; }
+    .stat-card h3 { font-size: 22px; color: var(--primary-green); margin-top: 4px; }
+    
+    .section-box { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; }
+    
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
+    th { background: #f8fafc; color: #6b7280; font-size: 11px; text-transform: uppercase; }
+    
+    .btn-action { padding: 8px 16px; background: var(--primary-green); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    
+    .sum-badge {
+      background: var(--light-green); color: var(--primary-green);
+      padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 12px; display: inline-block; margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Security Pin Login Overlay -->
+  <div id="securityOverlay">
+    <div class="login-box">
+      <img src="logo.png" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2153/2153788.png';" />
+      <h2>Freshly Picked Admin</h2>
+      <p>Enter 4-digit Security PIN to access Operations</p>
+      <input type="password" id="adminPinInput" maxlength="4" placeholder="••••" onkeyup="if(event.key==='Enter') verifyAdminPin()" />
+      <button onclick="verifyAdminPin()">Unlock Dashboard 🔓</button>
+    </div>
+  </div>
+
+  <!-- Header with Logo -->
+  <header>
+    <div class="brand-title">
+      <img src="logo.png" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2153/2153788.png';" />
+      <span>FRESHLY PICKED OPS</span>
+    </div>
+    <button class="btn-action" onclick="fetchAdminData()">🔄 Refresh Data</button>
+  </header>
+
+  <!-- Date-wise Filter Bar -->
+  <div class="filter-bar">
+    <div class="date-filter-group">
+      <span>📅 Filter Orders By Date:</span>
+      <input type="date" id="dateFilter" onchange="processOrdersData()" />
+      <button onclick="resetDateFilter()" style="padding:5px 10px; background:#f0f0f0; border:1px solid #ccc; border-radius:6px; cursor:pointer; font-weight:bold;">All Dates</button>
+    </div>
+    <div style="font-size:12px; color:var(--text-gray);" id="filterStatusText">Showing Selected Date Orders</div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" id="btn-procure" onclick="switchTab('procure')">🚜 Procurement List</button>
+    <button class="tab-btn" id="btn-packing" onclick="switchTab('packing')">📦 Customer Packing Checklist</button>
+    <button class="tab-btn" id="btn-route" onclick="switchTab('route')">🗺️ Delivery Route Planner</button>
+  </div>
+
+  <div class="container">
+    <!-- Top Stats -->
+    <div class="stats-row">
+      <div class="stat-card"><div>Orders Count</div><h3 id="statTotalOrders">0</h3></div>
+      <div class="stat-card"><div>Subtotal</div><h3 id="statSubtotal">₹0.00</h3></div>
+      <div class="stat-card"><div>Delivery Charges</div><h3 id="statDelivery">₹0.00</h3></div>
+      <div class="stat-card"><div>Total Collection</div><h3 id="statTotalValue">₹0.00</h3></div>
+    </div>
+
+    <!-- TAB 1: Procurement List -->
+    <div id="tabProcure" class="section-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3>Morning Wholesale Procurement Summary</h3>
+        <button onclick="window.print()" style="padding:6px 12px; background:#3b82f6; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🖨️ Print List</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Total Calculated Quantity Required</th>
+          </tr>
+        </thead>
+        <tbody id="procurementTableBody">
+          <tr><td colspan="2" style="text-align:center; padding:30px; color:#777;">Click "Refresh Data" to load live orders</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TAB 2: Packing Checklist -->
+    <div id="tabPacking" class="section-box" style="display:none;">
+      <h3>Customer Bag Packing Checklist</h3>
+      <div id="packingCardsContainer" style="margin-top:15px; color:#777; text-align:center; padding:20px;">Click "Refresh Data" to load packing lists</div>
+    </div>
+
+    <!-- TAB 3: Route Planner -->
+    <div id="tabRoute" class="section-box" style="display:none;">
+      <h3>Area Delivery Planner</h3>
+      <div id="routePlannerContainer" style="margin-top:15px; color:#777; text-align:center; padding:20px;">Click "Refresh Data" to load delivery routes</div>
+    </div>
+  </div>
+
+  <script>
+    // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby05KD8Gf2eZXKGs7XbePlWPW6ffvuSn5B9S4vzEQDIU2XIVjahWd_vz-YJMuUxqij8GQ/exec";
+    
+    // DEFAULT SECURITY PIN
+    const ADMIN_SECURITY_PIN = "8580";
+
+    let rawOrders = [];
+
+    function verifyAdminPin() {
+      const pin = document.getElementById("adminPinInput").value.trim();
+      if (pin === ADMIN_SECURITY_PIN) {
+        document.getElementById("securityOverlay").style.display = "none";
+        sessionStorage.setItem("freshlyAdminUnlocked", "true");
+        fetchAdminData();
+      } else {
+        alert("Incorrect Security PIN!");
+        document.getElementById("adminPinInput").value = "";
+      }
+    }
+
+    if (sessionStorage.getItem("freshlyAdminUnlocked") === "true") {
+      document.getElementById("securityOverlay").style.display = "none";
+      fetchAdminData();
+    }
+
+    // Default Date Filter to Today
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById("dateFilter").value = `${yyyy}-${mm}-${dd}`;
+
+    function resetDateFilter() {
+      document.getElementById("dateFilter").value = "";
+      processOrdersData();
+    }
+
+    function switchTab(tabName) {
+      document.getElementById('tabProcure').style.display = 'none';
+      document.getElementById('tabPacking').style.display = 'none';
+      document.getElementById('tabRoute').style.display = 'none';
+
+      document.getElementById('btn-procure').classList.remove('active');
+      document.getElementById('btn-packing').classList.remove('active');
+      document.getElementById('btn-route').classList.remove('active');
+
+      if (tabName === 'procure') {
+        document.getElementById('tabProcure').style.display = 'block';
+        document.getElementById('btn-procure').classList.add('active');
+      } else if (tabName === 'packing') {
+        document.getElementById('tabPacking').style.display = 'block';
+        document.getElementById('btn-packing').classList.add('active');
+      } else if (tabName === 'route') {
+        document.getElementById('tabRoute').style.display = 'block';
+        document.getElementById('btn-route').classList.add('active');
+      }
+    }
+
+    async function fetchAdminData() {
+      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("YOUR_GOOGLE_APPS_SCRIPT")) {
+        alert("Please paste your Google Apps Script URL in admin.html!");
+        return;
+      }
+      
+      const body = document.getElementById("procurementTableBody");
+      body.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:30px; color:var(--primary-green);">🔄 Fetching live orders...</td></tr>`;
+
+      try {
+        const response = await fetch(APPS_SCRIPT_URL);
+        rawOrders = await response.json();
+        processOrdersData();
+      } catch (err) {
+        console.error(err);
+        body.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px; color:red;">⚠️ Error fetching orders. Ensure Google Apps Script is deployed to 'Anyone'.</td></tr>`;
+      }
+    }
+
+    function parseUnitToStandard(unitStr, qty) {
+      if (!unitStr) return { type: 'qty', val: qty };
+      let str = unitStr.toLowerCase().trim();
+      let num = parseFloat(str) || 1;
+
+      const match = str.match(/[\d\.]+/);
+      if (match) {
+        num = parseFloat(match[0]);
+      } else {
+        num = 1;
+      }
+
+      if (str.includes('kg')) {
+        return { type: 'weight_kg', val: num * qty };
+      } else if (str.includes('g') || str.includes('gm')) {
+        return { type: 'weight_kg', val: (num / 1000) * qty };
+      } else if (str.includes('dozen')) {
+        return { type: 'pcs', val: (num * 12) * qty };
+      } else if (str.includes('pc') || str.includes('piece') || str.includes('pcs')) {
+        return { type: 'pcs', val: num * qty };
+      } else {
+        return { type: 'qty', val: qty };
+      }
+    }
+
+    function formatAggregatedUnits(typeMap) {
+      let parts = [];
+      if (typeMap.weight_kg && typeMap.weight_kg > 0) {
+        if (typeMap.weight_kg < 1) {
+          parts.push(`${Math.round(typeMap.weight_kg * 1000)} g (${typeMap.weight_kg.toFixed(3)} Kg)`);
+        } else {
+          parts.push(`${typeMap.weight_kg.toFixed(3).replace(/\.?0+$/, '')} Kg`);
+        }
+      }
+      if (typeMap.pcs && typeMap.pcs > 0) {
+        parts.push(`${typeMap.pcs} Pcs`);
+      }
+      if (typeMap.qty && typeMap.qty > 0) {
+        parts.push(`${typeMap.qty} Packs`);
+      }
+      return parts.join(' + ') || '0';
+    }
+
+    // Robust Date Matcher Function
+    function matchesSelectedDate(orderDateStr, selectedYYYYMMDD) {
+      if (!selectedYYYYMMDD) return true; // Show all if filter is reset
+      if (!orderDateStr) return false;
+
+      const [selY, selM, selD] = selectedYYYYMMDD.split('-').map(Number);
+
+      // Extract all numbers from the order date string (e.g., "21/08/2026", "21/8/2026", "2026-08-21")
+      const nums = String(orderDateStr).match(/\d+/g);
+      if (!nums || nums.length < 3) return false;
+
+      let d, m, y;
+      if (nums[0].length === 4) {
+        // YYYY-MM-DD
+        y = parseInt(nums[0], 10);
+        m = parseInt(nums[1], 10);
+        d = parseInt(nums[2], 10);
+      } else {
+        // DD/MM/YYYY or D/M/YYYY
+        d = parseInt(nums[0], 10);
+        m = parseInt(nums[1], 10);
+        y = parseInt(nums[2], 10);
+        if (y < 100) y += 2000;
+      }
+
+      return y === selY && m === selM && d === selD;
+    }
+
+    function processOrdersData() {
+      const selectedDate = document.getElementById("dateFilter").value;
+      const statusText = document.getElementById("filterStatusText");
+
+      let filteredOrders = rawOrders;
+
+      if (selectedDate) {
+        const parts = selectedDate.split('-');
+        statusText.textContent = `Showing Orders for ${parts[2]}/${parts[1]}/${parts[0]}`;
+        
+        filteredOrders = rawOrders.filter(order => 
+          matchesSelectedDate(order["Date Time"], selectedDate)
+        );
+      } else {
+        statusText.textContent = `Showing All Historical Orders`;
+      }
+
+      let subtotal = 0, delivery = 0, total = 0;
+      const procurementMap = {};
+
+      filteredOrders.forEach(order => {
+        subtotal += parseFloat(order["Subtotal"] || 0);
+        delivery += parseFloat(order["Delivery Fee"] || 0);
+        total += parseFloat(order["Total"] || 0);
+
+        let items = [];
+        try { 
+          items = typeof order["Items Details"] === "string" ? JSON.parse(order["Items Details"]) : order["Items Details"]; 
+        } catch (e) { items = []; }
+
+        items.forEach(item => {
+          const name = item.name.trim();
+          if (!procurementMap[name]) {
+            procurementMap[name] = { weight_kg: 0, pcs: 0, qty: 0 };
+          }
+
+          const parsed = parseUnitToStandard(item.unit, parseInt(item.quantity || 1));
+          if (parsed.type === 'weight_kg') procurementMap[name].weight_kg += parsed.val;
+          else if (parsed.type === 'pcs') procurementMap[name].pcs += parsed.val;
+          else procurementMap[name].qty += parsed.val;
+        });
+      });
+
+      document.getElementById("statTotalOrders").textContent = filteredOrders.length;
+      document.getElementById("statSubtotal").textContent = "₹" + subtotal.toFixed(2);
+      document.getElementById("statDelivery").textContent = "₹" + delivery.toFixed(2);
+      document.getElementById("statTotalValue").textContent = "₹" + total.toFixed(2);
+
+      // Render Procurement List
+      const procureBody = document.getElementById("procurementTableBody");
+      const names = Object.keys(procurementMap);
+      if (names.length === 0) {
+        procureBody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px;">No recorded orders for selected date.</td></tr>`;
+      } else {
+        procureBody.innerHTML = names.map(name => `
+          <tr>
+            <td><strong>${name}</strong></td>
+            <td><span class="sum-badge">${formatAggregatedUnits(procurementMap[name])}</span></td>
+          </tr>
+        `).join("");
+      }
+
+      // Render Packing Checklist
+      const packingContainer = document.getElementById("packingCardsContainer");
+      if (filteredOrders.length === 0) {
+        packingContainer.innerHTML = `<div style="text-align:center; padding:20px;">No customer orders for selected date.</div>`;
+      } else {
+        packingContainer.innerHTML = filteredOrders.map(o => {
+          let items = [];
+          try { items = typeof o["Items Details"] === "string" ? JSON.parse(o["Items Details"]) : o["Items Details"]; } catch (e) {}
+
+          const custItemMap = {};
+          items.forEach(item => {
+            const name = item.name.trim();
+            if (!custItemMap[name]) {
+              custItemMap[name] = { details: [], weight_kg: 0, pcs: 0, qty: 0 };
+            }
+            custItemMap[name].details.push(`${item.quantity}× ${item.unit}`);
+
+            const parsed = parseUnitToStandard(item.unit, parseInt(item.quantity || 1));
+            if (parsed.type === 'weight_kg') custItemMap[name].weight_kg += parsed.val;
+            else if (parsed.type === 'pcs') custItemMap[name].pcs += parsed.val;
+            else custItemMap[name].qty += parsed.val;
+          });
+
+          let listHtml = "";
+          Object.keys(custItemMap).forEach(name => {
+            const data = custItemMap[name];
+            const breakdown = data.details.join(", ");
+            const totalStr = formatAggregatedUnits(data);
+            listHtml += `
+              <li style="padding:8px 0; border-bottom: 1px dashed #e2e8f0; display:flex; align-items:flex-start;">
+                <input type="checkbox" style="margin-top:3px; margin-right:10px; transform:scale(1.3);" />
+                <div>
+                  <strong style="font-size:14px; color:var(--text-dark);">${name}</strong><br/>
+                  <span style="font-size:11px; color:#888;">Breakdown: ${breakdown}</span><br/>
+                  <span style="color:var(--primary-green); font-weight:800; font-size:13px; background:var(--light-green); padding:2px 6px; border-radius:4px; display:inline-block; margin-top:4px;">Pack Total: ${totalStr}</span>
+                </div>
+              </li>
+            `;
+          });
+
+          const flatHouse = o["Apartment / House"] || o["Address"] || "";
+          
+          return `
+            <div style="background:#fff; padding:16px; border-radius:10px; margin-bottom:14px; border:1px solid var(--border); box-shadow:0 2px 5px rgba(0,0,0,0.02);">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                <div>
+                  <div style="font-weight:900; font-size:15px; color:var(--dark-green);">${o["Name"]} <span style="font-size:11px; color:#888; font-weight:normal;">(${o["Order ID"]})</span></div>
+                  <div style="font-size:12px; color:var(--text-gray); margin-top:4px;">📍 ${flatHouse}, ${o["Area"]} (PIN: ${o["PIN Code"]})</div>
+                  <div style="font-size:12px; color:var(--text-gray); margin-top:2px;">📞 ${o["Phone"]}</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:16px; font-weight:900; color:var(--primary-green);">₹${o["Total"]}</div>
+                  <div style="font-size:10px; color:#888; font-weight:bold; margin-top:2px; text-transform:uppercase;">${o["Payment Method"]}</div>
+                </div>
+              </div>
+              <div style="background:#f9fafb; padding:10px; border-radius:8px;">
+                <ul style="list-style:none;">${listHtml}</ul>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Render Route Planner
+      const routeContainer = document.getElementById("routePlannerContainer");
+      const pinGroups = {};
+      filteredOrders.forEach(o => {
+        const pin = o["PIN Code"] || "Other";
+        if (!pinGroups[pin]) pinGroups[pin] = [];
+        pinGroups[pin].push(o);
+      });
+
+      const pins = Object.keys(pinGroups);
+      if (pins.length === 0) {
+        routeContainer.innerHTML = `<div style="text-align:center; padding:20px;">No delivery routes for selected date.</div>`;
+      } else {
+        routeContainer.innerHTML = pins.map(pin => `
+          <div style="margin-bottom:20px; background:white; padding:16px; border-radius:10px; border:1px solid var(--border);">
+            <h4 style="color:var(--primary-green); margin-bottom:12px; font-size:16px;">📍 PIN Code ${pin} <span style="font-size:12px; background:var(--light-green); padding:2px 8px; border-radius:10px; margin-left:8px;">${pinGroups[pin].length} Deliveries</span></h4>
+            ${pinGroups[pin].map(o => {
+              const flatHouse = o["Apartment / House"] || o["Address"] || "";
+              return `
+                <div style="background:#f8fafc; padding:12px; border-radius:8px; margin-bottom:8px; border:1px solid #e2e8f0; font-size:13px;">
+                  <div style="font-weight:800; font-size:14px; margin-bottom:4px;">${o["Name"]}</div>
+                  <div style="color:#555; margin-bottom:2px;">${flatHouse}, ${o["Area"]}</div>
+                  <div style="color:#555; margin-bottom:6px;">📞 ${o["Phone"]}</div>
+                  <div style="color:var(--primary-green); font-weight:800; background:white; padding:6px; border-radius:6px; border:1px solid #c2e2c5; display:inline-block;">Collect: ₹${o["Total"]}</div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `).join("");
+      }
+    }
+  </script>
+</body>
+</html>
