@@ -1,3 +1,6 @@
+The issue is that the code is split across multiple responses and has **structural problems**. Here is the **complete single file** — copy this entirely:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,8 +30,6 @@ button,input,textarea{
 button{
     cursor:pointer;
 }
-
-/* HEADER */
 
 .header{
     background:#ffffff;
@@ -110,8 +111,6 @@ button{
     justify-content:center;
 }
 
-/* HERO */
-
 .hero{
     background:linear-gradient(135deg,#dff8e7,#f7fff8);
     padding:35px 18px;
@@ -145,9 +144,8 @@ button{
     box-shadow:0 5px 20px rgba(0,0,0,.08);
     color:#0b8f3c;
     font-weight:bold;
+    white-space:nowrap;
 }
-
-/* CATEGORY */
 
 .categories{
     max-width:1250px;
@@ -187,8 +185,6 @@ button{
     border-color:#0b8f3c;
 }
 
-/* PRODUCTS */
-
 .products{
     max-width:1250px;
     margin:auto;
@@ -211,8 +207,6 @@ button{
     grid-template-columns:repeat(5,1fr);
     gap:15px;
 }
-
-/* SKELETON */
 
 .skeleton-card{
     background:white;
@@ -250,8 +244,6 @@ button{
     100%{background-position:-200% 0}
 }
 
-/* PRODUCT CARD */
-
 .product-card{
     background:white;
     border:1px solid #eee;
@@ -265,6 +257,10 @@ button{
     box-shadow:0 5px 20px rgba(0,0,0,.08);
 }
 
+.product-card.unavailable{
+    opacity:.65;
+}
+
 .product-image-wrap{
     height:180px;
     background:#f5f5f5;
@@ -272,6 +268,7 @@ button{
     display:flex;
     align-items:center;
     justify-content:center;
+    overflow:hidden;
 }
 
 .product-image{
@@ -283,8 +280,6 @@ button{
 .product-placeholder{
     font-size:55px;
 }
-
-/* UNAVAILABLE BADGE */
 
 .unavailable-badge{
     position:absolute;
@@ -298,10 +293,6 @@ button{
     border-radius:20px;
 }
 
-.product-card.unavailable{
-    opacity:.65;
-}
-
 .product-info{
     padding:13px;
 }
@@ -311,8 +302,6 @@ button{
     font-weight:700;
     margin-bottom:8px;
 }
-
-/* UNIT TABS */
 
 .unit-tabs{
     display:flex;
@@ -330,6 +319,7 @@ button{
     color:#555;
     font-weight:600;
     transition:.15s;
+    cursor:pointer;
 }
 
 .unit-tab.active{
@@ -372,6 +362,7 @@ button{
     padding:8px 14px;
     font-weight:bold;
     font-size:13px;
+    cursor:pointer;
 }
 
 .add-btn:disabled{
@@ -395,6 +386,7 @@ button{
     width:30px;
     height:32px;
     font-size:18px;
+    cursor:pointer;
 }
 
 .qty-control span{
@@ -402,8 +394,6 @@ button{
     text-align:center;
     font-weight:bold;
 }
-
-/* LOADING / ERROR */
 
 .loading,
 .error,
@@ -413,8 +403,6 @@ button{
     padding:50px 15px;
     color:#777;
 }
-
-/* ABOUT */
 
 .about{
     background:#e8f7ed;
@@ -433,8 +421,6 @@ button{
     color:#555;
     line-height:1.7;
 }
-
-/* BOTTOM NAV */
 
 .bottom-nav{
     position:fixed;
@@ -460,14 +446,13 @@ button{
     border:0;
     color:#666;
     font-size:12px;
+    cursor:pointer;
 }
 
 .bottom-nav button.active{
     color:#0b8f3c;
     font-weight:bold;
 }
-
-/* CART DRAWER */
 
 .overlay{
     display:none;
@@ -517,6 +502,7 @@ button{
     height:34px;
     border-radius:50%;
     font-size:18px;
+    cursor:pointer;
 }
 
 .cart-items{
@@ -578,12 +564,13 @@ button{
 .cart-item-price{
     color:#0b8f3c;
     font-weight:bold;
+    margin-bottom:5px;
 }
 
 .cart-qty{
     display:flex;
     align-items:center;
-    margin-top:7px;
+    margin-top:5px;
 }
 
 .cart-qty button{
@@ -593,6 +580,7 @@ button{
     background:white;
     border-radius:5px;
     font-size:16px;
+    cursor:pointer;
 }
 
 .cart-qty span{
@@ -629,9 +617,8 @@ button{
     font-size:16px;
     font-weight:bold;
     margin-top:12px;
+    cursor:pointer;
 }
-
-/* MODAL */
 
 .modal{
     display:none;
@@ -715,10 +702,6 @@ button{
     border-bottom:1px dashed #e0e0e0;
 }
 
-.order-summary-item:last-of-type{
-    border-bottom:none;
-}
-
 .place-order{
     width:100%;
     border:0;
@@ -728,6 +711,7 @@ button{
     border-radius:10px;
     font-size:16px;
     font-weight:bold;
+    cursor:pointer;
 }
 
 .delivery-note{
@@ -736,8 +720,6 @@ button{
     margin-top:8px;
     text-align:center;
 }
-
-/* TOAST */
 
 .toast{
     position:fixed;
@@ -761,108 +743,39 @@ button{
     transform:translateX(-50%) translateY(0);
 }
 
-/* RESPONSIVE */
-
 @media(max-width:1100px){
-    .product-grid{
-        grid-template-columns:repeat(4,1fr);
-    }
+    .product-grid{grid-template-columns:repeat(4,1fr);}
 }
 
 @media(max-width:800px){
-    .product-grid{
-        grid-template-columns:repeat(3,1fr);
-    }
-
-    .hero h1{
-        font-size:30px;
-    }
+    .product-grid{grid-template-columns:repeat(3,1fr);}
+    .hero h1{font-size:30px;}
 }
 
 @media(max-width:600px){
-
-    body{
-        padding-bottom:70px;
-    }
-
-    .header-top{
-        padding:11px;
-        flex-wrap:wrap;
-    }
-
-    .logo{
-        font-size:21px;
-    }
-
-    .search-box{
-        order:3;
-        flex-basis:100%;
-        max-width:none;
-    }
-
-    .hero{
-        padding:25px 15px;
-    }
-
-    .hero-inner{
-        display:block;
-    }
-
-    .hero h1{
-        font-size:27px;
-    }
-
-    .hero-badge{
-        display:inline-block;
-        margin-top:15px;
-    }
-
-    .product-grid{
-        grid-template-columns:repeat(2,1fr);
-        gap:10px;
-    }
-
-    .product-image-wrap{
-        height:150px;
-    }
-
-    .product-info{
-        padding:10px;
-    }
-
-    .product-title{
-        font-size:14px;
-    }
-
-    .price{
-        font-size:15px;
-    }
-
-    .add-btn{
-        padding:7px 11px;
-        font-size:12px;
-    }
-
-    .bottom-nav{
-        display:block;
-    }
-
-    .products{
-        padding-left:10px;
-        padding-right:10px;
-    }
-
-    .categories{
-        padding-left:10px;
-        padding-right:10px;
-    }
+    body{padding-bottom:70px;}
+    .header-top{padding:11px;flex-wrap:wrap;}
+    .logo{font-size:21px;}
+    .search-box{order:3;flex-basis:100%;max-width:none;}
+    .hero{padding:25px 15px;}
+    .hero-inner{display:block;}
+    .hero h1{font-size:27px;}
+    .hero-badge{display:inline-block;margin-top:15px;}
+    .product-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+    .product-image-wrap{height:150px;}
+    .product-info{padding:10px;}
+    .product-title{font-size:14px;}
+    .price{font-size:15px;}
+    .add-btn{padding:7px 11px;font-size:12px;}
+    .bottom-nav{display:block;}
+    .products{padding-left:10px;padding-right:10px;}
+    .categories{padding-left:10px;padding-right:10px;}
 }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header class="header">
     <div class="header-top">
 
@@ -888,70 +801,38 @@ button{
     </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
     <div class="hero-inner">
-
         <div>
-            <h1>Fresh Vegetables & Fruits 🥬</h1>
+            <h1>Fresh Vegetables &amp; Fruits 🥬</h1>
             <p>
                 Fresh products delivered to your doorstep.
-                Choose your products, add them to cart and place
-                your order easily through WhatsApp.
+                Choose your products, add them to cart and
+                place your order easily through WhatsApp.
             </p>
         </div>
-
-        <div class="hero-badge">
-            🚚 Fresh Delivery
-        </div>
-
+        <div class="hero-badge">🚚 Fresh Delivery</div>
     </div>
 </section>
 
-<!-- CATEGORIES -->
 <section class="categories">
-
     <h2>Shop by Category</h2>
-
     <div class="category-list">
-
-        <button
-            class="category-btn active"
-            onclick="filterCategory('all',this)"
-        >All</button>
-
-        <button
-            class="category-btn"
-            onclick="filterCategory('vegetable',this)"
-        >🥬 Vegetables</button>
-
-        <button
-            class="category-btn"
-            onclick="filterCategory('fruit',this)"
-        >🍎 Fruits</button>
-
-        <button
-            class="category-btn"
-            onclick="filterCategory('other',this)"
-        >🛒 Others</button>
-
+        <button class="category-btn active" onclick="filterCategory('all',this)">All</button>
+        <button class="category-btn" onclick="filterCategory('vegetable',this)">🥬 Vegetables</button>
+        <button class="category-btn" onclick="filterCategory('fruit',this)">🍎 Fruits</button>
+        <button class="category-btn" onclick="filterCategory('other',this)">🛒 Others</button>
     </div>
-
 </section>
 
-<!-- PRODUCTS -->
 <section class="products" id="products">
-
     <div class="products-header">
         <h2>Fresh Products</h2>
         <span id="productCount"></span>
     </div>
-
     <div id="productGrid" class="product-grid"></div>
-
 </section>
 
-<!-- ABOUT -->
 <section class="about" id="about">
     <h2>About Freshly Picked</h2>
     <p>
@@ -961,46 +842,22 @@ button{
     </p>
 </section>
 
-<!-- FOOTER -->
-<footer style="
-    background:#087c35;
-    color:white;
-    text-align:center;
-    padding:25px 15px;
-">
+<footer style="background:#087c35;color:white;text-align:center;padding:25px 15px;">
     <p>© 2026 Freshly Picked. All Rights Reserved.</p>
-    <p style="margin-top:7px;font-size:12px;">
-        Freshness is our commitment.
-    </p>
+    <p style="margin-top:7px;font-size:12px;">Freshness is our commitment.</p>
 </footer>
 
-<!-- MOBILE BOTTOM NAV -->
 <div class="bottom-nav">
     <div class="bottom-nav-inner">
-
-        <button onclick="window.scrollTo({top:0,behavior:'smooth'})">
-            🏠<br>Home
-        </button>
-
-        <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
-            🥬<br>Products
-        </button>
-
-        <button onclick="openCart()">
-            🛒<br>Cart
-        </button>
-
-        <button onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
-            ℹ️<br>About
-        </button>
-
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})">🏠<br>Home</button>
+        <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">🥬<br>Products</button>
+        <button onclick="openCart()">🛒<br>Cart</button>
+        <button onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">ℹ️<br>About</button>
     </div>
 </div>
 
-<!-- OVERLAY -->
 <div id="overlay" class="overlay" onclick="closeCart()"></div>
 
-<!-- CART DRAWER -->
 <aside id="cartDrawer" class="cart-drawer">
 
     <div class="cart-header">
@@ -1011,33 +868,26 @@ button{
     <div id="cartItems" class="cart-items"></div>
 
     <div class="cart-footer">
-
         <div class="summary-row">
             <span>Subtotal</span>
             <strong id="cartSubtotal">₹0</strong>
         </div>
-
         <div class="summary-row">
             <span>Delivery</span>
             <strong id="deliveryCharge">₹0</strong>
         </div>
-
         <div class="summary-row summary-total">
             <span>Total</span>
             <strong id="cartTotal">₹0</strong>
         </div>
-
         <button class="checkout-btn" onclick="openCheckout()">
             Proceed to Checkout
         </button>
-
     </div>
 
 </aside>
 
-<!-- CHECKOUT MODAL -->
 <div id="checkoutModal" class="modal">
-
     <div class="modal-box">
 
         <div class="modal-header">
@@ -1098,48 +948,25 @@ button{
             </p>
 
         </div>
-
     </div>
-
 </div>
 
-<!-- TOAST -->
 <div id="toast" class="toast"></div>
 
 <script>
 
 /* ================================
-   SETTINGS
+   SETTINGS — CHANGE THESE
 ================================ */
 
-/*
-   Replace with your published CSV URL
-   File > Share > Publish to web > CSV
-*/
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=csv&gid=0";
 
-/* Your WhatsApp number with country code */
 const WHATSAPP_NUMBER = "918580051009";
 
-/* Set delivery charge. 0 = FREE */
 const DELIVERY_CHARGE = 0;
 
 /* ================================
-   SHEET COLUMN MAPPING
-   Matches your exact headers:
-   ID | Name | Category | Unit_1 | Price_1 |
-   sale_Price_1 | Unit_2 | Price_2 |
-   sale_Price_2 | Image | Available
-================================ */
-
-/*
-   Each product will have two unit options.
-   User selects which unit they want before
-   adding to cart.
-*/
-
-/* ================================
-   GLOBAL DATA
+   GLOBALS
 ================================ */
 
 let products = [];
@@ -1151,23 +978,13 @@ let cart = JSON.parse(
 let selectedCategory = "all";
 
 /* ================================
-   CATEGORY EMOJI MAP
-================================ */
-
-const CATEGORY_EMOJI = {
-    vegetable : "🥬",
-    fruit     : "🍎",
-    other     : "🛒"
-};
-
-/* ================================
    CSV PARSER
 ================================ */
 
 function parseCSV(text){
 
     const rows = [];
-    let row   = [];
+    let row = [];
     let value = "";
     let insideQuotes = false;
 
@@ -1194,16 +1011,10 @@ function parseCSV(text){
         }
 
         if((char === "\n" || char === "\r") && !insideQuotes){
-
             if(char === "\r" && next === "\n") i++;
-
             row.push(value);
             value = "";
-
-            if(row.some(cell => cell.trim() !== "")){
-                rows.push(row);
-            }
-
+            if(row.some(c => c.trim() !== "")) rows.push(row);
             row = [];
             continue;
         }
@@ -1211,11 +1022,9 @@ function parseCSV(text){
         value += char;
     }
 
-    if(value !== "" || row.length > 0){
+    if(row.length > 0){
         row.push(value);
-        if(row.some(cell => cell.trim() !== "")){
-            rows.push(row);
-        }
+        if(row.some(c => c.trim() !== "")) rows.push(row);
     }
 
     return rows;
@@ -1225,43 +1034,32 @@ function parseCSV(text){
    NUMBER HELPER
 ================================ */
 
-function getNumber(value){
-
-    if(value === undefined || value === null || value === ""){
-        return 0;
-    }
-
-    const number = parseFloat(
-        String(value)
-        .replace(/[₹,\s]/g, "")
-        .replace(/[^\d.-]/g, "")
-    );
-
-    return isNaN(number) ? 0 : number;
+function getNumber(val){
+    if(val === undefined || val === null || val === "") return 0;
+    const n = parseFloat(String(val).replace(/[₹,\s]/g,"").replace(/[^\d.-]/g,""));
+    return isNaN(n) ? 0 : n;
 }
 
 /* ================================
-   SHOW SKELETON LOADING
+   SKELETON LOADER
 ================================ */
 
 function showSkeleton(){
-
-    const grid = document.getElementById("productGrid");
-
-    grid.innerHTML = Array(10).fill(`
-        <div class="skeleton-card">
-            <div class="skeleton-img"></div>
-            <div class="skeleton-body">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line short"></div>
-                <div class="skeleton-line short"></div>
+    document.getElementById("productGrid").innerHTML =
+        Array(10).fill(`
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-body">
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-line short"></div>
+                </div>
             </div>
-        </div>
-    `).join("");
+        `).join("");
 }
 
 /* ================================
-   LOAD PRODUCTS FROM GOOGLE SHEET
+   LOAD PRODUCTS
 ================================ */
 
 async function loadProducts(){
@@ -1273,44 +1071,39 @@ async function loadProducts(){
         const response = await fetch(SHEET_URL);
 
         if(!response.ok){
-            throw new Error("Sheet fetch failed: " + response.status);
+            throw new Error("HTTP error: " + response.status);
         }
 
         const csv  = await response.text();
         const rows = parseCSV(csv);
 
         if(rows.length < 2){
-            throw new Error("Sheet has no product rows.");
+            throw new Error("Sheet has no data rows.");
         }
 
-        /*
-           Normalize headers to lowercase + trimmed
-           so we match regardless of spacing/case
-        */
         const headers = rows[0].map(h => h.trim().toLowerCase());
 
-        products = rows.slice(1).map((row, index) => {
+        const idx = (key) => headers.indexOf(key.toLowerCase());
 
-            /*
-               Map each column by header name
-            */
+        products = rows.slice(1).map((row, i) => {
+
             const get = (key) => {
-                const idx = headers.indexOf(key.toLowerCase());
-                return idx !== -1 ? (row[idx] || "").trim() : "";
+                const j = idx(key);
+                return j !== -1 ? (row[j] || "").trim() : "";
             };
 
             return {
-                id          : get("id") || String(index + 1),
-                name        : get("name"),
-                category    : get("category").toLowerCase(),
-                unit1       : get("unit_1"),
-                price1      : getNumber(get("price_1")),
-                salePrice1  : getNumber(get("sale_price_1")),
-                unit2       : get("unit_2"),
-                price2      : getNumber(get("price_2")),
-                salePrice2  : getNumber(get("sale_price_2")),
-                image       : get("image"),
-                available   : get("available").toLowerCase()
+                id         : get("id")           || String(i + 1),
+                name       : get("name"),
+                category   : get("category").toLowerCase(),
+                unit1      : get("unit_1"),
+                price1     : getNumber(get("price_1")),
+                salePrice1 : getNumber(get("sale_price_1")),
+                unit2      : get("unit_2"),
+                price2     : getNumber(get("price_2")),
+                salePrice2 : getNumber(get("sale_price_2")),
+                image      : get("image"),
+                available  : get("available").toLowerCase()
             };
 
         }).filter(p => p.name !== "");
@@ -1318,78 +1111,49 @@ async function loadProducts(){
         validateCart();
         renderProducts();
 
-    }catch(error){
+    }catch(err){
 
-        console.error("Load error:", error);
+        console.error(err);
 
         document.getElementById("productGrid").innerHTML = `
             <div class="error">
-                ❌ Products could not be loaded.<br><br>
-                Please check your Google Sheet publishing settings.<br>
-                <small style="color:#aaa">${error.message}</small>
+                ❌ Could not load products.<br><br>
+                Make sure your Google Sheet is published as CSV.<br>
+                <small style="color:#aaa">${err.message}</small>
             </div>
         `;
     }
 }
 
 /* ================================
-   CHECK IF PRODUCT IS AVAILABLE
+   HELPERS
 ================================ */
 
 function isAvailable(product){
-    /*
-       Treat empty, "yes", "true", "1" as available.
-       Treat "no", "false", "0" as unavailable.
-    */
-    const val = (product.available || "").toLowerCase().trim();
-    if(val === "" || val === "yes" || val === "true" || val === "1"){
-        return true;
-    }
-    return false;
+    const v = (product.available || "").trim().toLowerCase();
+    if(v === "no" || v === "false" || v === "0") return false;
+    return true;
 }
 
-/* ================================
-   GET DISPLAY PRICE FOR A UNIT
-================================ */
-
-function getUnitPrice(product, unitNumber){
-    /*
-       unitNumber = 1 or 2
-       Returns the effective selling price
-       (sale price if set, else regular price)
-    */
-    if(unitNumber === 1){
-        return product.salePrice1 > 0
-            ? product.salePrice1
-            : product.price1;
-    }else{
-        return product.salePrice2 > 0
-            ? product.salePrice2
-            : product.price2;
+function getUnitPrice(product, unit){
+    if(unit === 1){
+        return product.salePrice1 > 0 ? product.salePrice1 : product.price1;
     }
+    return product.salePrice2 > 0 ? product.salePrice2 : product.price2;
 }
 
-/* ================================
-   GET ORIGINAL PRICE (for strikethrough)
-================================ */
-
-function getOriginalPrice(product, unitNumber){
-    if(unitNumber === 1){
+function getOriginalPrice(product, unit){
+    if(unit === 1){
         return product.salePrice1 > 0 ? product.price1 : 0;
-    }else{
-        return product.salePrice2 > 0 ? product.price2 : 0;
     }
+    return product.salePrice2 > 0 ? product.price2 : 0;
 }
-
-/* ================================
-   DETECT CATEGORY EMOJI
-================================ */
 
 function getCategoryEmoji(category){
-    const cat = (category || "").toLowerCase();
-    if(cat.includes("fruit"))     return "🍎";
-    if(cat.includes("vegetable")) return "🥬";
-    if(cat.includes("sabzi"))     return "🥬";
+    const c = (category || "").toLowerCase();
+    if(c.includes("fruit"))     return "🍎";
+    if(c.includes("vegetable")) return "🥬";
+    if(c.includes("sabzi"))     return "🥬";
     return "🛒";
 }
 
@@ -1399,33 +1163,20 @@ function getCategoryEmoji(category){
 
 function renderProducts(){
 
-    const grid = document.getElementById("productGrid");
+    const grid   = document.getElementById("productGrid");
+    const search = document.getElementById("searchInput").value.trim().toLowerCase();
 
-    const search = document
-        .getElementById("searchInput")
-        .value.trim().toLowerCase();
+    const filtered = products.filter(p => {
 
-    const filtered = products.filter(product => {
-
-        /* Category filter */
-        const cat = (product.category || "").toLowerCase();
-
-        const matchCategory =
+        const matchCat =
             selectedCategory === "all" ||
-            cat.includes(selectedCategory);
+            p.category.includes(selectedCategory);
 
-        /* Search filter */
-        const searchable = (
-            product.name + " " +
-            product.category + " " +
-            product.unit1 + " " +
-            product.unit2
-        ).toLowerCase();
+        const text = (p.name + " " + p.category + " " + p.unit1 + " " + p.unit2).toLowerCase();
 
-        const matchSearch =
-            !search || searchable.includes(search);
+        const matchSearch = !search || text.includes(search);
 
-        return matchCategory && matchSearch;
+        return matchCat && matchSearch;
     });
 
     document.getElementById("productCount").textContent =
@@ -1434,17 +1185,11 @@ function renderProducts(){
     grid.innerHTML = "";
 
     if(!filtered.length){
-        grid.innerHTML = `
-            <div class="no-products">
-                No products found.
-            </div>
-        `;
+        grid.innerHTML = `<div class="no-products">No products found.</div>`;
         return;
     }
 
-    filtered.forEach(product => {
-        grid.appendChild(createProductCard(product));
-    });
+    filtered.forEach(p => grid.appendChild(createProductCard(p)));
 }
 
 /* ================================
@@ -1454,99 +1199,74 @@ function renderProducts(){
 function createProductCard(product){
 
     const available = isAvailable(product);
+    const hasUnit1  = product.unit1 !== "" && product.price1 > 0;
+    const hasUnit2  = product.unit2 !== "" && product.price2 > 0;
 
-    /* Determine which units exist */
-    const hasUnit1 = product.unit1 !== "" && product.price1 > 0;
-    const hasUnit2 = product.unit2 !== "" && product.price2 > 0;
-
-    /*
-       Selected unit for this card.
-       We store it in a local variable per card.
-       Default = 1 if available, else 2.
-    */
     let selectedUnit = hasUnit1 ? 1 : 2;
 
-    /* Cart key = productId_unit */
     const cartKey1 = product.id + "_1";
     const cartKey2 = product.id + "_2";
 
-    /* ---- CARD ELEMENT ---- */
-    const card = document.createElement("div");
-    /* Cart key = productId_unit */
-    const cartKey1 = product.id + "_1";
-    const cartKey2 = product.id + "_2";
-
-    /* ---- CARD ELEMENT ---- */
+    /* Card */
     const card = document.createElement("div");
     card.className = "product-card" + (!available ? " unavailable" : "");
 
-    /* ---- IMAGE WRAP ---- */
+    /* Image */
     const imageWrap = document.createElement("div");
     imageWrap.className = "product-image-wrap";
 
     if(product.image){
-
         const img = document.createElement("img");
         img.className = "product-image";
-        img.alt = product.name;
-        img.loading = "lazy";
-        img.src = product.image;
-
-        img.onerror = function(){
+        img.alt       = product.name;
+        img.loading   = "lazy";
+        img.src       = product.image;
+        img.onerror   = function(){
             this.style.display = "none";
             const ph = document.createElement("div");
-            ph.className = "product-placeholder";
+            ph.className   = "product-placeholder";
             ph.textContent = getCategoryEmoji(product.category);
             imageWrap.appendChild(ph);
         };
-
         imageWrap.appendChild(img);
-
     }else{
-
         const ph = document.createElement("div");
-        ph.className = "product-placeholder";
+        ph.className   = "product-placeholder";
         ph.textContent = getCategoryEmoji(product.category);
         imageWrap.appendChild(ph);
-
     }
 
-    /* Unavailable badge */
     if(!available){
         const badge = document.createElement("div");
-        badge.className = "unavailable-badge";
+        badge.className   = "unavailable-badge";
         badge.textContent = "Out of Stock";
         imageWrap.appendChild(badge);
     }
 
     card.appendChild(imageWrap);
 
-    /* ---- PRODUCT INFO ---- */
+    /* Info */
     const info = document.createElement("div");
     info.className = "product-info";
 
-    /* Product Name */
+    /* Title */
     const titleEl = document.createElement("div");
-    titleEl.className = "product-title";
+    titleEl.className   = "product-title";
     titleEl.textContent = product.name;
     info.appendChild(titleEl);
 
-    /* ---- UNIT TABS ---- */
-    /*
-       Only show unit tabs if both units exist.
-       If only one unit, no tabs needed.
-    */
+    /* Unit tabs */
     if(hasUnit1 && hasUnit2){
 
         const unitTabs = document.createElement("div");
         unitTabs.className = "unit-tabs";
 
         const tab1 = document.createElement("button");
-        tab1.className = "unit-tab" + (selectedUnit === 1 ? " active" : "");
+        tab1.className   = "unit-tab active";
         tab1.textContent = product.unit1;
 
         const tab2 = document.createElement("button");
-        tab2.className = "unit-tab" + (selectedUnit === 2 ? " active" : "");
+        tab2.className   = "unit-tab";
         tab2.textContent = product.unit2;
 
         tab1.onclick = function(){
@@ -1567,24 +1287,15 @@ function createProductCard(product){
         unitTabs.appendChild(tab2);
         info.appendChild(unitTabs);
 
-    }else if(hasUnit1){
-
-        /* Single unit label */
-        const unitLabel = document.createElement("div");
-        unitLabel.style.cssText = "font-size:12px;color:#888;margin-bottom:8px;";
-        unitLabel.textContent = product.unit1;
-        info.appendChild(unitLabel);
-
-    }else if(hasUnit2){
+    }else{
 
         const unitLabel = document.createElement("div");
-        unitLabel.style.cssText = "font-size:12px;color:#888;margin-bottom:8px;";
-        unitLabel.textContent = product.unit2;
+        unitLabel.style.cssText   = "font-size:12px;color:#888;margin-bottom:8px;";
+        unitLabel.textContent = hasUnit1 ? product.unit1 : product.unit2;
         info.appendChild(unitLabel);
-
     }
 
-    /* ---- PRICE ROW ---- */
+    /* Price row */
     const priceRow = document.createElement("div");
     priceRow.className = "price-row";
 
@@ -1600,89 +1311,60 @@ function createProductCard(product){
     priceBlock.appendChild(priceEl);
     priceBlock.appendChild(oldPriceEl);
     priceRow.appendChild(priceBlock);
-
     info.appendChild(priceRow);
     card.appendChild(info);
 
-    /* ---- UPDATE PRICE ROW FUNCTION ---- */
-    /*
-       This function refreshes the price display
-       and the add/qty button based on selected unit.
-    */
+    /* Update price row */
     function updatePriceRow(){
 
-        const currentKey =
-            selectedUnit === 1 ? cartKey1 : cartKey2;
+        const currentKey  = selectedUnit === 1 ? cartKey1 : cartKey2;
+        const sellPrice   = getUnitPrice(product, selectedUnit);
+        const origPrice   = getOriginalPrice(product, selectedUnit);
 
-        const sellPrice =
-            getUnitPrice(product, selectedUnit);
-
-        const origPrice =
-            getOriginalPrice(product, selectedUnit);
-
-        /* Update price display */
         priceEl.textContent = "₹" + sellPrice.toFixed(2);
 
         if(origPrice > 0 && origPrice > sellPrice){
             oldPriceEl.textContent = "₹" + origPrice.toFixed(2);
             oldPriceEl.style.display = "inline";
         }else{
-            oldPriceEl.textContent = "";
+            oldPriceEl.textContent   = "";
             oldPriceEl.style.display = "none";
         }
-
-        /* Remove existing button/control */
-        const existing = priceRow.querySelector(
-            ".add-btn, .qty-control"
-        );
-
+        const existing = priceRow.querySelector(".add-btn, .qty-control");
         if(existing) existing.remove();
 
-        /* Check if this unit is already in cart */
-        const cartItem = cart.find(
-            i => i.cartKey === currentKey
-        );
+        const cartItem = cart.find(i => i.cartKey === currentKey);
 
         if(!available){
-
-            /* Show disabled button */
             const btn = document.createElement("button");
-            btn.className = "add-btn";
+            btn.className   = "add-btn";
             btn.textContent = "Unavailable";
-            btn.disabled = true;
+            btn.disabled    = true;
             priceRow.appendChild(btn);
 
         }else if(cartItem){
-
-            /* Show quantity control */
             priceRow.appendChild(
                 createQtyControl(product, selectedUnit, currentKey, updatePriceRow)
             );
 
         }else{
-
-            /* Show ADD button */
             const btn = document.createElement("button");
-            btn.className = "add-btn";
+            btn.className   = "add-btn";
             btn.textContent = "ADD";
-
             btn.onclick = function(){
                 addToCart(product, selectedUnit, currentKey);
                 updatePriceRow();
             };
-
             priceRow.appendChild(btn);
         }
     }
 
-    /* Initial render of price row */
     updatePriceRow();
-
     return card;
 }
 
 /* ================================
-   CREATE QUANTITY CONTROL
+   CREATE QTY CONTROL
 ================================ */
 
 function createQtyControl(product, unitNumber, cartKey, refreshCallback){
@@ -1698,7 +1380,6 @@ function createQtyControl(product, unitNumber, cartKey, refreshCallback){
     const plus = document.createElement("button");
     plus.textContent = "+";
 
-    /* Get current quantity */
     function getQty(){
         const item = cart.find(i => i.cartKey === cartKey);
         return item ? item.quantity : 0;
@@ -1710,7 +1391,6 @@ function createQtyControl(product, unitNumber, cartKey, refreshCallback){
         updateCartQuantity(cartKey, -1);
         const qty = getQty();
         if(qty <= 0){
-            /* Removed from cart — refresh card button */
             refreshCallback();
         }else{
             countEl.textContent = qty;
@@ -1737,8 +1417,7 @@ function createQtyControl(product, unitNumber, cartKey, refreshCallback){
 
 function addToCart(product, unitNumber, cartKey){
 
-    const existing = cart.find(i => i.cartKey === cartKey);
-
+    const existing  = cart.find(i => i.cartKey === cartKey);
     const unitLabel = unitNumber === 1 ? product.unit1 : product.unit2;
     const price     = getUnitPrice(product, unitNumber);
 
@@ -1746,20 +1425,19 @@ function addToCart(product, unitNumber, cartKey){
         existing.quantity++;
     }else{
         cart.push({
-            cartKey   : cartKey,
-            id        : product.id,
-            name      : product.name,
-            unit      : unitLabel,
-            price     : price,
-            image     : product.image || "",
-            category  : product.category,
-            quantity  : 1
+            cartKey  : cartKey,
+            id       : product.id,
+            name     : product.name,
+            unit     : unitLabel,
+            price    : price,
+            image    : product.image || "",
+            category : product.category,
+            quantity : 1
         });
     }
 
     saveCart();
     updateCartUI();
-
     showToast(product.name + " (" + unitLabel + ") added to cart");
 }
 
@@ -1770,7 +1448,6 @@ function addToCart(product, unitNumber, cartKey){
 function updateCartQuantity(cartKey, change){
 
     const item = cart.find(i => i.cartKey === cartKey);
-
     if(!item) return;
 
     item.quantity += change;
@@ -1788,25 +1465,18 @@ function updateCartQuantity(cartKey, change){
 ================================ */
 
 function saveCart(){
-    localStorage.setItem(
-        "freshlyPickedCart",
-        JSON.stringify(cart)
-    );
+    localStorage.setItem("freshlyPickedCart", JSON.stringify(cart));
 }
 
 /* ================================
    VALIDATE CART
-   Remove cart items whose product no longer exists
 ================================ */
 
 function validateCart(){
-
     if(!products.length) return;
-
     cart = cart.filter(cartItem =>
         products.some(p => String(p.id) === String(cartItem.id))
     );
-
     saveCart();
 }
 
@@ -1815,10 +1485,7 @@ function validateCart(){
 ================================ */
 
 function getSubtotal(){
-    return cart.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-    );
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
 }
 
 /* ================================
@@ -1827,24 +1494,18 @@ function getSubtotal(){
 
 function updateCartUI(){
 
-    /* Total item count badge */
-    const count = cart.reduce(
-        (total, item) => total + item.quantity, 0
-    );
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
 
     document.getElementById("cartCount").textContent = count;
 
-    /* Subtotal */
     document.getElementById("cartSubtotal").textContent =
         "₹" + getSubtotal().toFixed(2);
 
-    /* Delivery */
     document.getElementById("deliveryCharge").textContent =
         DELIVERY_CHARGE === 0
         ? "FREE"
         : "₹" + DELIVERY_CHARGE.toFixed(2);
 
-    /* Total */
     document.getElementById("cartTotal").textContent =
         "₹" + (getSubtotal() + DELIVERY_CHARGE).toFixed(2);
 
@@ -1877,43 +1538,40 @@ function renderCartItems(){
         const div = document.createElement("div");
         div.className = "cart-item";
 
-        /* Image or placeholder */
         if(item.image){
             const img = document.createElement("img");
-            img.src = item.image;
-            img.alt = item.name;
+            img.src   = item.image;
+            img.alt   = item.name;
             img.onerror = function(){
                 this.style.display = "none";
                 const ph = document.createElement("div");
-                ph.className = "cart-item-img-placeholder";
+                ph.className   = "cart-item-img-placeholder";
                 ph.textContent = getCategoryEmoji(item.category);
                 div.insertBefore(ph, div.firstChild);
             };
             div.appendChild(img);
         }else{
             const ph = document.createElement("div");
-            ph.className = "cart-item-img-placeholder";
+            ph.className   = "cart-item-img-placeholder";
             ph.textContent = getCategoryEmoji(item.category);
             div.appendChild(ph);
         }
 
-        /* Info block */
         const info = document.createElement("div");
         info.className = "cart-item-info";
 
         const title = document.createElement("div");
-        title.className = "cart-item-title";
+        title.className   = "cart-item-title";
         title.textContent = item.name;
 
         const unitLabel = document.createElement("div");
-        unitLabel.className = "cart-item-unit";
+        unitLabel.className   = "cart-item-unit";
         unitLabel.textContent = item.unit;
 
         const price = document.createElement("div");
-        price.className = "cart-item-price";
+        price.className   = "cart-item-price";
         price.textContent = "₹" + (item.price * item.quantity).toFixed(2);
 
-        /* Quantity control */
         const qty = document.createElement("div");
         qty.className = "cart-qty";
 
@@ -1962,16 +1620,14 @@ function closeCart(){
 }
 
 /* ================================
-   OPEN CHECKOUT
+   OPEN / CLOSE CHECKOUT
 ================================ */
 
 function openCheckout(){
-
     if(!cart.length){
         showToast("Your cart is empty");
         return;
     }
-
     closeCart();
     renderCheckoutSummary();
     document.getElementById("checkoutModal").classList.add("show");
@@ -1997,7 +1653,7 @@ function renderCheckoutSummary(){
 
         const name = document.createElement("span");
         name.textContent =
-            item.name + " (" + item.unit + ") × " + item.quantity;
+            item.name + " (" + item.unit + ") x" + item.quantity;
 
         const amount = document.createElement("strong");
         amount.textContent =
@@ -2008,21 +1664,19 @@ function renderCheckoutSummary(){
         box.appendChild(row);
     });
 
-    /* Total row */
     const totalRow = document.createElement("div");
     totalRow.style.cssText =
         "margin-top:10px;padding-top:10px;border-top:1px solid #ddd;" +
         "font-weight:bold;display:flex;justify-content:space-between;";
-
     totalRow.innerHTML =
-        `<span>Total</span>
-         <span>₹${(getSubtotal() + DELIVERY_CHARGE).toFixed(2)}</span>`;
+        "<span>Total</span>" +
+        "<span>₹" + (getSubtotal() + DELIVERY_CHARGE).toFixed(2) + "</span>";
 
     box.appendChild(totalRow);
 }
 
 /* ================================
-   PLACE ORDER — WhatsApp
+   PLACE ORDER
 ================================ */
 
 function placeOrder(){
@@ -2041,7 +1695,6 @@ function placeOrder(){
     const pincode      = document.getElementById("customerPincode").value.trim();
     const instructions = document.getElementById("customerInstructions").value.trim();
 
-    /* Validation */
     if(!name || !phone || !house || !area || !city || !pincode){
         alert("Please fill all required delivery details.");
         return;
@@ -2057,34 +1710,33 @@ function placeOrder(){
         return;
     }
 
-    /* Build WhatsApp message */
     let msg = "";
 
-    msg += "*🛒 NEW ORDER — FRESHLY PICKED*%0A%0A";
-    msg += "*👤 Customer:* " + encodeURIComponent(name)  + "%0A";
-    msg += "*📱 Mobile:*   " + encodeURIComponent(phone) + "%0A%0A";
-    msg += "*🧺 ORDER ITEMS*%0A";
+    msg += "*NEW ORDER - FRESHLY PICKED*%0A%0A";
+    msg += "*Customer:* " + encodeURIComponent(name)  + "%0A";
+    msg += "*Mobile:*   " + encodeURIComponent(phone) + "%0A%0A";
+    msg += "*ORDER ITEMS*%0A";
 
     cart.forEach((item, index) => {
         msg +=
             (index + 1) + ". " +
             encodeURIComponent(item.name) +
             " (" + encodeURIComponent(item.unit) + ")" +
-            " × " + item.quantity +
-            " = %E2%82%B9" + (item.price * item.quantity).toFixed(2) +
+            " x" + item.quantity +
+            " = Rs." + (item.price * item.quantity).toFixed(2) +
             "%0A";
     });
 
     const subtotal = getSubtotal();
     const total    = subtotal + DELIVERY_CHARGE;
 
-    msg += "%0A*💰 Subtotal:* %E2%82%B9" + subtotal.toFixed(2) + "%0A";
-    msg += "*🚚 Delivery:* " +
-        (DELIVERY_CHARGE === 0 ? "FREE" : "%E2%82%B9" + DELIVERY_CHARGE.toFixed(2)) +
+    msg += "%0A*Subtotal:* Rs." + subtotal.toFixed(2) + "%0A";
+    msg += "*Delivery:* " +
+        (DELIVERY_CHARGE === 0 ? "FREE" : "Rs." + DELIVERY_CHARGE.toFixed(2)) +
         "%0A";
-    msg += "*💵 TOTAL:* %E2%82%B9" + total.toFixed(2) + "%0A%0A";
+    msg += "*TOTAL:* Rs." + total.toFixed(2) + "%0A%0A";
 
-    msg += "*📍 DELIVERY ADDRESS*%0A";
+    msg += "*DELIVERY ADDRESS*%0A";
     msg += "Name: "    + encodeURIComponent(name)  + "%0A";
     msg += "House: "   + encodeURIComponent(house) + "%0A";
     msg += "Area: "    + encodeURIComponent(area)  + "%0A";
@@ -2100,15 +1752,13 @@ function placeOrder(){
         msg += "Instructions: " + encodeURIComponent(instructions) + "%0A";
     }
 
-    msg += "%0A*🙏 Thank you for ordering from Freshly Picked!*";
+    msg += "%0AThank you for ordering from Freshly Picked!";
 
-    /* Open WhatsApp */
     window.open(
         "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + msg,
         "_blank"
     );
 
-    /* Clear cart */
     cart = [];
     saveCart();
     updateCartUI();
@@ -2124,21 +1774,11 @@ function filterCategory(category, button){
 
     selectedCategory = category;
 
-    document.querySelectorAll(".category-btn").forEach(btn
-/* ================================
-   CATEGORY FILTER
-================================ */
-
-function filterCategory(category, button){
-
-    selectedCategory = category;
-
     document.querySelectorAll(".category-btn").forEach(btn =>
         btn.classList.remove("active")
     );
 
     button.classList.add("active");
-
     renderProducts();
 }
 
@@ -2146,9 +1786,7 @@ function filterCategory(category, button){
    SEARCH
 ================================ */
 
-document
-    .getElementById("searchInput")
-    .addEventListener("input", renderProducts);
+document.getElementById("searchInput").addEventListener("input", renderProducts);
 
 /* ================================
    TOAST
@@ -2157,18 +1795,14 @@ document
 function showToast(message){
 
     const toast = document.getElementById("toast");
-
     toast.textContent = message;
     toast.classList.add("show");
 
-    setTimeout(() =>
-        toast.classList.remove("show"),
-        1800
-    );
+    setTimeout(() => toast.classList.remove("show"), 1800);
 }
 
 /* ================================
-   START APP
+   START
 ================================ */
 
 loadProducts();
@@ -2178,3 +1812,6 @@ updateCartUI();
 
 </body>
 </html>
+
+
+    
